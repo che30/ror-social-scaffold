@@ -1,3 +1,4 @@
+# rubocop:disabled Metrics/CyclomaticComplexity
 module FriendshipsHelper
   def check_status(user)
     if !current_user.pending_friends.include?(user) && !user.pending_friends.include?(current_user)
@@ -54,3 +55,4 @@ module FriendshipsHelper
     content_tag(:div, "you have #{mutual_friends.count} mutual friends", class: '')
   end
 end
+# rubocop:enabled Metrics/CyclomaticComplexity
