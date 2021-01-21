@@ -19,7 +19,7 @@ class FriendshipsController < ApplicationController
     friendship = friend.friendships.find_by(friend_id: current_user.id)
     if current_user.friend_requests.include?(friend)
       friendship.confirm_friend
-      flash[:notice] = 'You are now friends.'
+      flash[:notice] = "You are now friends.#{friend.name}"
       redirect_to users_path
     end
   end

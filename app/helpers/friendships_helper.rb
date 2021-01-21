@@ -43,5 +43,9 @@ module FriendshipsHelper
     end 
   end
   def mutual_friends?(user)
+    if current_user.friend?(user)
+     mutual_friends=current_user.friends.where(users: {id: user.friends.pluck(:id)})
+     content_tag( :div, "you have #{mutual_friends.count} mutual friends", :class=>'')
+    end
   end
 end
