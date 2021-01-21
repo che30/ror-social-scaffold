@@ -16,7 +16,9 @@ RSpec.describe User, type: :model do
     end
     it 'expects confirm friendship to make users friends' do
       u1.friendships.create(friend_id: u2.id)
-      u2.confirm_friend(u1)
+      friend = User.find_by(id: u1.id)
+      friendship = friend.friendships.find_by(friend_id: u2.id)
+        friendship.confirm_friend
       expect(u1.friends.include?(u2)).to eql(true)
     end
 
