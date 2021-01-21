@@ -9,14 +9,14 @@ module FriendshipsHelper
   end
 
   def add_friend(user)
-    unless !current_user.friend?(user) && user != current_user && check_status(user) == false && !user.friends.include?(current_user)
-      return false
+    if !current_user.friend?(user) && user != current_user && check_status(user) == false && !user.friends.include?(current_user)
+      return true
+    else
+      false
     end
-
-    true
   end
 
-  def cancel_friend(user)
+  def cancel_friend?(user)
     if check_status(user) == true && user != current_user && user1 = current_user.friendships.find_by(friend_id: user.id)
       form_for(user1,
                html: { method: :delete }) do |f|
@@ -41,5 +41,7 @@ module FriendshipsHelper
      content_tag( :div, "you have #{current_user.friend_requests.count} request pending", :class=>'')
       
     end 
+  end
+  def mutual_friends?(user)
   end
 end
