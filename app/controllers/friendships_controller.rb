@@ -1,4 +1,3 @@
-
 class FriendshipsController < ApplicationController
   def index
     @my_friends = current_user.friends
@@ -17,22 +16,21 @@ class FriendshipsController < ApplicationController
   def update
     friend = User.find(params[:id])
     friendship = friend.friendships.find_by(friend_id: current_user.id)
-    if current_user.friend_requests.include?(friend)
-      friendship.confirm_friend
-      flash[:notice] = "You are now friends.#{friend.name}"
-      redirect_to users_path
-    end
+    return unless current_user.friend_requests.include?(friend)
+
+    friendship.confirm_friend
+    flash[:notice] = "You are now friends.#{friend.name}"
+    redirect_to users_path
   end
 
   def destroy
-    if Friendship.exists?(params[:id])
-     @friendship=Friendship.find(params[:id])
-      @friendship.destroy
-    else
-      @friendship = Friendship.where(friend_id: [current_user, params[:id]], user_id: [current_user, params[:id]]).first
-      @friendship.destroy
-    end
+    @friendship = if Friendship.exists?(params[:id])
+                    Friendship.find(params[:id])
 
+                  else
+                    Friendship.where(friend_id: [current_user, params[:id]], user_id: [current_user, params[:id]]).first
+                  end
+    @friendship.destroy
     redirect_to users_path
   end
 
@@ -42,4 +40,3 @@ class FriendshipsController < ApplicationController
     params.require(:friendship).permit(:friend_id, :user_id)
   end
 end
-
