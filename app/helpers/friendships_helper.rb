@@ -1,4 +1,3 @@
-# rubocop:disabled Metrics/CyclomaticComplexity
 module FriendshipsHelper
   def check_status(user)
     if !current_user.pending_friends.include?(user) && !user.pending_friends.include?(current_user)
@@ -30,13 +29,18 @@ module FriendshipsHelper
     end
   end
 
+  def part_of_accept_or_decline(user)
+    current_user.friend_requests.include?(user) &&
+      user != current_user
+  end
+
   def accept_or_decline(user, requester, accepter)
     return unless current_user.friend_requests.include?(user)
 
-    return unless current_user.friend_requests.include?(user) &&
-                  user != current_user &&
-                  !current_user.friends.include?(user) && check_status(user) == true &&
-                  !user.friends.include?(current_user) && (requester == accepter)
+    return unless part_of_accept_or_decline(user) &&
+                  check_status(user) == true &&
+                  !user.friends.include?(current_user) &&
+                  (requester == accepter)
 
     concat button_to 'Accept Friend Request', friendship_path(id: requester), class: 'Accept', method: :put
     button_to 'Decline Friend Request', friendship_path(id: accepter), class: 'cancel', method: :delete
@@ -55,4 +59,3 @@ module FriendshipsHelper
     content_tag(:div, "you have #{mutual_friends.count} mutual friends", class: '')
   end
 end
-# rubocop:enabled Metrics/CyclomaticComplexity
