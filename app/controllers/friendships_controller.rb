@@ -1,6 +1,6 @@
 class FriendshipsController < ApplicationController
   def index
-    @my_friends = current_user.friends
+    @my_friends = current_user.friends if !current_user.friends.nil
   end
 
   def create
