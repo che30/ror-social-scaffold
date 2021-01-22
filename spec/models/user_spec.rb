@@ -1,0 +1,32 @@
+require 'rails_helper'
+
+RSpec.describe User, type: :model do
+  context 'validation tests' do
+    it ' ensures name not blank' do
+      user = User.new(name: '').save
+      expect(user).to eql(false)
+    end
+  end
+  context 'creating and saving friendships' do
+    let(:u1) { User.create(name: 'one', email: 'one@user.com', password: '1234567') }
+    let(:u2) { User.create(name: 'two', email: 'two@user.com', password: '1234567') }
+    it 'testing user friendship and inverse frienship' do
+      u1.friendships.create(friend_id: u2.id)
+      expect(u1.friendships).not_to eql(u2.friendships)
+    end
+    it 'expects confirm_friend to make users friends' do
+      u1.friendships.create(friend_id: u2.id)
+      friend = User.find_by(id: u1.id)
+      friendship = friend.friendships.find_by(friend_id: u2.id)
+      friendship.confirm_friend
+      expect(u1.friends.include?(u2)).to eql(true)
+    end
+    it 'expects destroy method to reject friendship' do
+      u1.friendships.create(friend_id: u2.id)
+      friend = User.find_by(id: u1.id)
+      friendship = friend.friendships.find_by(friend_id: u2.id)
+      friendship.destroy
+      expect(u1.friendships.include?(u2)).to eql(false)
+    end
+  end
+end

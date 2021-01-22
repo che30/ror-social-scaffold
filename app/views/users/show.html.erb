@@ -1,5 +1,15 @@
 <section class="user-section">
   <h2><%= "Name: #{@user.name}" %></h2>
+  <%if @user!=current_user %>
+    <% if add_friend(@user) %>
+      <%=  form_for current_user.friendships.build(friend: @user) do |f|%>
+      <%= f.hidden_field :user_id%>
+      <%= f.hidden_field :friend_id%>
+     <%= f.submit " Add friend"%>
+        <% end %> 
+      <% end %>
+  <% end %>
+    <%= number_of_request(@user)%> 
   <article class="timeline">
     <h3>Recent posts:</h3>
     <ul class="posts">
