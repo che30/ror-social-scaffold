@@ -12,13 +12,12 @@ RSpec.feature 'Users', type: :feature do
   end
   context 'validation tests' do
     it ' ensures name not blank' do
-      user = User.new(name: '',password: '123456').save
+      user = User.new(name: '', password: '123456').save
       expect(user).to eql(false)
     end
     it ' ensures password lenght greater than or equals 6' do
-      user = User.new(name: 'one',password: '123').save
+      user = User.new(name: 'one', password: '123').save
       expect(user).to eql(false)
     end
   end
-
 end
