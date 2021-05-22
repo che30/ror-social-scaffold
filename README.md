@@ -8,7 +8,7 @@
 - Ruby on Rails v5.2.4
 
 ## Live Demo
-[Live Demo Link](https://still-brook-03186.herokuapp.com/users)
+[Live Demo Link](https://salty-sea-09086.herokuapp.com/)
 
 TBA
 
